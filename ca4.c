@@ -133,6 +133,44 @@ void xor(int (*ca)[SIZE][SIZE],int (*key)[SIZE][SIZE]){
           }
 }
 
+void exchange_1_5(int (*ca)[SIZE][SIZE]){
+    int tmp;
+    for(int i=0;i<SIZE;i++){
+        tmp=*(*(*(ca+i)));
+        *(*(*(ca+i)))=*(*(*(ca+i)+5));
+        *(*(*(ca+i)+5))=tmp;
+    }
+}
+
+void encrypt(int n,int (*ca)[SIZE][SIZE]){
+    for(int t=0;t<n;t++){
+        top_rule(ca);
+        exchange_1_5(ca);
+        front_rule(ca);
+        for(int i=0;i<SIZE;i++){
+        for(int j=0;j<SIZE;j++)
+        for(int k=0;k<SIZE;k++)
+        printf("%d ",ca[i][j][k]);
+        printf("\n");
+    }
+    printf("\n");
+    }
+}
+
+void decrypt(int n,int (*ca)[SIZE][SIZE]){
+    for(int t=0;t<n;t++){
+        front_rule(ca);
+        exchange_1_5(ca);
+        top_rule(ca);
+        for(int i=0;i<SIZE;i++){
+        for(int j=0;j<SIZE;j++)
+        for(int k=0;k<SIZE;k++)
+        printf("%d ",ca[i][j][k]);
+        printf("\n");
+    }
+    printf("\n");
+    }
+}
 int main(){                                         
     //采用循环边界，三维可逆元胞自动机
     int ca[SIZE][SIZE][SIZE]={
@@ -149,16 +187,6 @@ int main(){
         {{1,0,1,0},{1,0,1,1},{0,1,1,0},{1,0,1,1}},
         {{1,1,0,1},{1,0,0,0},{0,1,1,0},{1,0,1,0}}
     };
-    top_rule(ca);
-    xor(ca,key);
-    front_rule(ca);
-    top_rule(ca);
-    front_rule(ca);
-    xor(ca,key);
-    for(int i=0;i<SIZE;i++){
-        for(int j=0;j<SIZE;j++)
-        for(int k=0;k<SIZE;k++)
-        printf("%d ",ca[i][j][k]);
-        printf("\n");
-    }
+    encrypt(4,ca);
+    decrypt(4,ca);
 }
